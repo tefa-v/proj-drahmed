@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشروع مادة البرمجة - قصة أثر</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #dc2626;
+            --accent-color: #059669;
+            --warning-color: #d97706;
+            --background-color: #f1f5f9;
+            --card-background: #ffffff;
+            --text-color: #1e293b;
+            --shadow-color: rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 50%, #dbeafe 100%);
+            background-attachment: fixed;
+            color: var(--text-color);
+            line-height: 1.9;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease;
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+            z-index: 999;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 12px 35px rgba(37, 99, 235, 0.5);
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 60px 30px;
+            border-radius: 0 0 40px 40px;
+            box-shadow: 0 15px 50px rgba(37, 99, 235, 0.3);
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 4s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(10%, 10%) rotate(180deg); }
+        }
+
+        .header-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+            position: relative;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .header h1 {
+            margin: 0 0 15px 0;
+            font-size: 2.8rem;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .header h3 {
+            margin: 0;
+            font-weight: 400;
+            color: #bfdbfe;
+            font-size: 1.2rem;
+            position: relative;
+        }
+
+        .card {
+            background: var(--card-background);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 50px;
+            box-shadow: 0 20px 50px var(--shadow-color);
+            border: 1px solid rgba(255,255,255,0.8);
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeInUp 0.8s ease forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--secondary-color));
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.3s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px rgba(37, 99, 235, 0.2);
+            transition: all 0.5s ease;
+        }
+
+        .card h2 {
+            color: var(--secondary-color);
+            border-bottom: 4px solid var(--secondary-color);
+            padding-bottom: 15px;
+            display: inline-block;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .card h2::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            right: 0;
+            width: 60%;
+            height: 4px;
+            background: var(--warning-color);
+            border-radius: 2px;
+        }
+
+        .note {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-right: 6px solid var(--warning-color);
+            padding: 25px 30px;
+            border-radius: 15px;
+            font-weight: 600;
+            margin: 30px 0;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(217, 119, 6, 0.2);
+            transform: translateX(10px);
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        @keyframes slideIn {
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        .note::before {
+            content: '💡';
+            font-size: 1.8rem;
+            margin-left: 15px;
+        }
+
+        .enrichment {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-right: 6px solid var(--accent-color);
+            padding: 25px 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            box-shadow: 0 8px 25px rgba(5, 150, 105, 0.2);
+            transform: translateX(10px);
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        .enrichment h3 {
+            color: var(--accent-color);
+            margin: 0 0 10px 0;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .enrichment h3::before {
+            content: '📚';
+            font-size: 1.5rem;
+        }
+
+        .enrichment p {
+            margin: 0;
+        }
+
+        .media-container {
+            text-align: center;
+            margin: 35px 0;
+        }
+
+        .media-container img, 
+        .media-container video {
+            max-width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px var(--shadow-color);
+            transition: all 0.4s ease;
+            border: 3px solid rgba(255,255,255,0.8);
+        }
+
+        .media-container img:hover,
+        .media-container video:hover {
+            transform: scale(1.03) rotate(0.5deg);
+            box-shadow: 0 25px 50px rgba(37, 99, 235, 0.25);
+        }
+
+        .media-container h4 {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .media-container h4::before {
+            content: '🎬';
+            font-size: 1.3rem;
+        }
+
+        .question-text {
+            color: var(--primary-dark);
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-align: center;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            padding: 22px 30px;
+            border-radius: 20px;
+            margin: 30px 0;
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            border: 2px solid rgba(37, 99, 235, 0.2);
+        }
+
+        .question-text::before {
+            content: '❓';
+            font-size: 1.6rem;
+        }
+
+        .card p {
+            font-size: 1.15rem;
+            text-align: justify;
+            margin: 22px 0;
+            color: #374151;
+        }
+
+        .action-btn {
+            display: block;
+            width: 100%;
+            max-width: 380px;
+            margin: 40px auto 15px auto;
+            padding: 20px 35px;
+            font-size: 1.25rem;
+            font-family: inherit;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.35);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .action-btn:hover::before {
+            left: 100%;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(37, 99, 235, 0.45);
+        }
+
+        .action-btn:active {
+            transform: translateY(-2px) scale(1);
+        }
+
+        .action-btn.red {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            box-shadow: 0 10px 30px rgba(220, 38, 38, 0.35);
+        }
+
+        .action-btn.red:hover {
+            box-shadow: 0 15px 40px rgba(220, 38, 38, 0.45);
+        }
+
+        .quiz-box {
+            display: none;
+            background: linear-gradient(135deg, #ecfeff, #cffafe);
+            padding: 30px;
+            border: 3px solid var(--primary-color);
+            border-radius: 20px;
+            margin-top: 30px;
+            text-align: right;
+            animation: slideDown 0.5s ease;
+            box-shadow: 0 15px 35px rgba(37, 99, 235, 0.15);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .quiz-box h3 {
+            color: var(--primary-color);
+            margin: 0 0 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+        }
+
+        .quiz-box h3::before {
+            content: '📝';
+            font-size: 1.4rem;
+        }
+
+        .quiz-option {
+            display: block;
+            padding: 15px 25px;
+            margin: 12px 0;
+            background: white;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .quiz-option:hover {
+            background: #f0f9ff;
+            border-color: var(--primary-color);
+            transform: translateX(-8px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.15);
+        }
+
+        .quiz-option input {
+            margin-left: 12px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .quiz-btn {
+            background: linear-gradient(135deg, var(--accent-color), #047857);
+            color: white;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-top: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(5, 150, 105, 0.35);
+        }
+
+        .quiz-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(5, 150, 105, 0.45);
+        }
+
+        .quiz-result {
+            font-weight: 700;
+            margin-top: 20px;
+            padding: 18px 25px;
+            border-radius: 15px;
+            animation: pulse 0.5s ease;
+            font-size: 1.1rem;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .quiz-result.correct {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
+            border: 2px solid var(--accent-color);
+        }
+
+        .quiz-result.wrong {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+            border: 2px solid #dc2626;
+        }
+
+        .quiz-result.warning {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+            border: 2px solid var(--warning-color);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 20px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header h3 {
+                font-size: 1rem;
+            }
+
+            .header-icon {
+                font-size: 3rem;
+            }
+
+            .card {
+                padding: 25px 20px;
+                margin-bottom: 30px;
+                border-radius: 20px;
+            }
+
+            .card h2 {
+                font-size: 1.5rem;
+            }
+
+            .action-btn {
+                max-width: 100%;
+                padding: 16px 25px;
+                font-size: 1.1rem;
+            }
+
+            .question-text {
+                font-size: 1.15rem;
+                padding: 15px 20px;
+            }
+
+            .note, .enrichment {
+                padding: 18px 20px;
+            }
+
+            .scroll-top {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+                bottom: 20px;
+                left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress-bar" id="progressBar"></div>
+    <button class="scroll-top" id="scrollTopBtn" onclick="scrollToTop()">↑</button>
+
+    <header class="header">
+        <span class="header-icon">🏛️</span>
+        <h1>البوابة الإلكترونية لمادة اللغة العربية</h1>
+        <h3>شرح درس (قصة أثر) بطريقة ممتعة.. نتمنى لكم الاستفادة الكاملة</h3>
+    </header>
+
+    <div class="container">
+
+        <section class="card" id="church-section">
+            <h2>أولاً: الكنيسة المعلقة</h2>
+
+            <div class="note">
+                تخيل معي أننا في حي مصر القديمة، نمشي بجوار مسجد عمرو بن العاص، لنجد أمامنا هذا الأثر العظيم!
+            </div>
+
+            <p>تقع الكنيسة المعلقة في حي مصر القديمة، وهي على مقربة من جامع عمرو بن العاص، وتذهب بعض الروايات إلى أن الكنيسة بنيت على أنقاض مكان احتمت فيه العائلة المقدسة في أثناء السنوات التي قضوها في مصر؛ هروباً من الرومان.</p>
+            
+            <div class="media-container">
+                <img src="1.jpg" alt="الكنيسة المعلقة من الخارج">
+            </div>
+
+            <p class="question-text">لماذا سميت بالمعلقة؟</p>
+
+            <p>وقد جددت الكنيسة عدة مرات، ففي عهد الخليفة العباسي هارون الرشيد تم تجديدها، ثم جددت مرة أخرى في عهد الخليفة العزيز بالله الفاطمي، وقد تم إطلاق اسم المعلقة على الكنيسة؛ لأنها بنيت على برجين من الأبراج القديمة للحصن الروماني "حصن بابليون".</p>
+            
+            <div class="media-container">
+                <img src="2.jpg" alt="واجهة الكنيسة المعلقة">
+            </div>
+
+            <p>وتعتبر الكنيسة المعلقة من أقدم الكنائس التي لا تزال باقية في مصر، وقد دفن بها عدد من رجال الدين المسيحي في القرنين الحادي عشر، والثاني عشر الميلاديين، ولا تزال توجد لهم صور وأيقونات بالكنيسة تضاء لها الشموع.</p>
+            
+            <div class="media-container">
+                <img src="3.jpg" alt="الكنيسة من الداخل">
+            </div>
+
+            <div class="media-container">
+                <h4>فيديو توضيحي للكنيسة المعلقة</h4>
+                <video controls poster="vedio_frame1.jpg">
+                    <source src="video1.mp4" type="video/mp4">
+                    متصفحك لا يدعم تشغيل الفيديو.
+                </video>
+            </div>
+
+            <button class="action-btn" onclick="showChurchQuiz()">🎯 اضغط هنا لاختبار نفسك</button>
+            
+            <div id="church-quiz" class="quiz-box">
+                <h3>سؤال عن الكنيسة المعلقة:</h3>
+                <p>في عهد مَن مِن الخلفاء العباسيين تم تجديد الكنيسة المعلقة؟</p>
+                
+                <label class="quiz-option">
+                    <input type="radio" name="church-q" value="1"> هارون الرشيد
+                </label>
+                <label class="quiz-option">
+                    <input type="radio" name="church-q" value="2"> العزيز بالله الفاطمي
+                </label>
+                <label class="quiz-option">
+                    <input type="radio" name="church-q" value="3"> المأمون
+                </label>
+                
+                <button class="quiz-btn" onclick="checkChurchQuiz()">✓ تحقق من إجابتك</button>
+                <div id="church-result" class="quiz-result"></div>
+            </div>
+
+        </section>
+
+        <section class="card">
+            <h2>ثانياً: قلعة قايتباي</h2>
+
+            <div class="note">
+                معلومة سريعة: هذه القلعة تم بناؤها في نفس مكان "منارة الإسكندرية" القديمة!
+            </div>
+
+            <p>بنيت هذه القلعة في عهد السلطان الملك قايتباي مكان منارة الإسكندرية القديمه في أثناء العصر المملوكي، وهى عبارة عن بناء مستطيل طوله 60 متراً، وعرضه 50 متراً، وقد تم الانتهاء من البناء بعد عامين من تاريخ الإنشاء، ولأن القلعة تعد من أهم القلاع على ساحل البحر الأبيض المتوسط، فقد اهتم بها سلاطين وحكام مصر على مر العصور التاريخية، ففي العصر المملوكي اهتم السلطان قنصوه الغوري بالقلعة (قايتباي) اهتماماً شديداً، وزاد من قوة حاميتها وشحنها بالسلاح والعتاد.</p>
+            
+            <div class="media-container">
+                <img src="4.jpg" alt="قلعة قايتباي">
+            </div>
+
+            <p>وقد استخدم العثمانيون هذه القلعة لحمايتهم فجعلوا بها طوائف من الجند والمشاة والفرسان والمدفعية ولما تولى محمد على باشا حكم مصر، تولى تجديد أسوار القلعة وتقويتها وتزويدها بالمدافع، وقد قامت لجنة حفظ الآثار العربية بعمل العديد من الإصلاحات والتجديدات في أسوار وطوابق القلعة.</p>
+            
+            <div class="media-container">
+                <img src="5.jpg" alt="أسوار القلعة">
+            </div>
+
+            <p>وقد بنيت القلعة على مساحة قدرها 17550 متراً، وهي عبارة عن مجموعة من الأسوار مقسمة على سورين من الأحجار الضخمة، ولها برج رئيسي يقع بالناحية الشمالية الغربية، وبناء يتكون من ثلاثة طوابق مربعة الشكل يخرج من كل ركن من أركانه الأربعة برج دائري، يرتفع عن سطح البرج الرئيسي وقد بنى البرج بالحجر الجيري، وتعد القلعة من أهم المناطق الأثرية المصرية التي يرتادها السائحون من مختلف بلدان العالم.</p>
+            
+            <div class="media-container">
+                <img src="6.jpg" alt="القلعة من الداخل">
+            </div>
+
+            <div class="enrichment">
+                <h3>معلومة إثرائية</h3>
+                <p>هل تعلم؟ القلعة كانت تحتوي على "صهريج" (خزان مياه ضخم) مبني أسفلها، ليضمن وجود مياه شرب عذبة تكفي الجنود لشهور طويلة في حالة تعرض القلعة لأي حصار من الأعداء من جهة البحر.</p>
+            </div>
+
+            <div class="media-container">
+                <h4>فيديو توضيحي لقلعة قايتباي</h4>
+                <video controls poster="vedio_frame2.jpg">
+                    <source src="video2.mp4" type="video/mp4">
+                    متصفحك لا يدعم تشغيل الفيديو.
+                </video>
+            </div>
+
+            <button class="action-btn red" onclick="showCitadelQuiz()">🎯 اضغط هنا لاختبار نفسك</button>
+            
+            <div id="citadel-quiz" class="quiz-box">
+                <h3>سؤال عن قلعة قايتباي:</h3>
+                <p>من هو السلطان المملوكي الذي اهتم بالقلعة اهتماماً شديداً وزاد من حاميتها؟</p>
+                
+                <label class="quiz-option">
+                    <input type="radio" name="citadel-q" value="1"> محمد علي باشا
+                </label>
+                <label class="quiz-option">
+                    <input type="radio" name="citadel-q" value="2"> قنصوه الغوري
+                </label>
+                <label class="quiz-option">
+                    <input type="radio" name="citadel-q" value="3"> العثمانيون
+                </label>
+                
+                <button class="quiz-btn" onclick="checkCitadelQuiz()">✓ تحقق من إجابتك</button>
+                <div id="citadel-result" class="quiz-result"></div>
+            </div>
+
+        </section>
+
+         </section>
+         <div style="text-align: center; margin-bottom: 30px;">
+            <a href="presentation.pdf" target="_blank" class="action-btn" style="background-color: rgb(36, 24, 166); display: inline-block;">شاهد العرض التقديمي المتميز من هنا</a>
+        </div>
+ </section>
+         <div style="text-align: center; margin-bottom: 30px;">
+            <a href="book.html" target="_blank" class="action-btn" style="background-color: blue; display: inline-block;">شاهد دليل البناء الكامل</a>
+        </div>
+
+    </div>
+    </div>
+
+    </div>
+
+    <script>
+        function showChurchQuiz() {
+            var quizBox = document.getElementById('church-quiz');
+            quizBox.style.display = 'block';
+            quizBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function checkChurchQuiz() {
+            var options = document.getElementsByName('church-q');
+            var resultBox = document.getElementById('church-result');
+            var answered = false;
+
+            for (var i = 0; i < options.length; i++) {
+                if (options[i].checked) {
+                    answered = true;
+                    if (options[i].value === "1") {
+                        resultBox.innerHTML = "🎉 أحسنت! إجابة صحيحة - أنت متميز!";
+                        resultBox.className = "quiz-result correct";
+                    } else {
+                        resultBox.innerHTML = "😊 إجابة خاطئة - لا تقلق، راجع الدرس مرة أخرى";
+                        resultBox.className = "quiz-result wrong";
+                    }
+                }
+            }
+
+            if (answered === false) {
+                resultBox.innerHTML = "⚠️ الرجاء اختيار إجابة أولاً";
+                resultBox.className = "quiz-result warning";
+            }
+        }
+
+        function showCitadelQuiz() {
+            var quizBox = document.getElementById('citadel-quiz');
+            quizBox.style.display = 'block';
+            quizBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function checkCitadelQuiz() {
+            var options = document.getElementsByName('citadel-q');
+            var resultBox = document.getElementById('citadel-result');
+            var answered = false;
+
+            for (var i = 0; i < options.length; i++) {
+                if (options[i].checked) {
+                    answered = true;
+                    if (options[i].value === "2") {
+                        resultBox.innerHTML = "🎉 أحسنت! إجابة صحيحة - أنت متميز!";
+                        resultBox.className = "quiz-result correct";
+                    } else {
+                        resultBox.innerHTML = "😊 إجابة خاطئة - لا تقلق، راجع الدرس مرة أخرى";
+                        resultBox.className = "quiz-result wrong";
+                    }
+                }
+            }
+
+            if (answered === false) {
+                resultBox.innerHTML = "⚠️ الرجاء اختيار إجابة أولاً";
+                resultBox.className = "quiz-result warning";
+            }
+        }
+
+        window.addEventListener('scroll', function() {
+            var progressBar = document.getElementById('progressBar');
+            var scrollTop = window.scrollY;
+            var docHeight = document.body.scrollHeight - window.innerHeight;
+            var progress = (scrollTop / docHeight) * 100;
+            progressBar.style.width = progress + '%';
+        });
+
+        window.addEventListener('scroll', function() {
+            var btn = document.getElementById('scrollTopBtn');
+            if (window.scrollY > 300) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+
+</body>
+</html>
